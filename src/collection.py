@@ -1,4 +1,4 @@
-from ev3dev2.motor import SpeedRPM
+from ev3dev2.motor import SpeedRPM, LargeMotor
 
 from field import map
 from robot import Robot
@@ -12,8 +12,6 @@ class Collection:
         self.brick = brick
 
     def start(self):
-        accel = self.brick.getIOByName("acceleration")
-        # accel.on_for_seconds(SpeedRPM(50), 10)
-        
-        accel.on_for_rotations(SpeedRPM(50), )
+        accel = self.brick.getIOByName("acceleration") # type: LargeMotor
+        cradle = self.brick.getIOByName("cradle") # type: LargeMotor
         
