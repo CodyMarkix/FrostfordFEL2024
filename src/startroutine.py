@@ -20,6 +20,6 @@ class StartRoutine:
         self.lights.animate_stop()
         self.lights.set_color('LEFT', 'GREEN'); self.lights.set_color('RIGHT', 'GREEN') # Technically the semicolon is strongly discouraged by PEP 8 but fuck that 😎
         self.spkr.play_song((('D4', 's'), ('A4', 's'), ('D5', 'e')))
-        time.sleep(2) # Giving things time to settle
+        print(time.time())
 
         print("Robot is ready for action!")

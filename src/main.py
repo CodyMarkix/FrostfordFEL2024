@@ -4,14 +4,13 @@ from ev3dev2.sensor import INPUT_1, INPUT_4
 
 from ev3dev2.motor import LargeMotor, MediumMotor
 from ev3dev2.sensor.lego import ColorSensor, GyroSensor
-from ev3dev2.button import Button
-from ev3dev2.sound import Sound
-from ev3dev2.led import Leds
+
 
 from robot import Robot
 from startroutine import StartRoutine
 from collection import Collection
 from tools import Tools
+import time
 
 class Main():
     """
@@ -40,4 +39,5 @@ class Main():
 
 
 if __name__ == "__main__":
+    print(time.time())
     Main().main()

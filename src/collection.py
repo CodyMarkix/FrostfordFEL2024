@@ -2,7 +2,8 @@ from ev3dev2.motor import SpeedRPM, LargeMotor
 
 from field import map
 from robot import Robot
-from tools import Tools
+
+import time
 
 class Collection:
     backpack = []
@@ -14,4 +15,5 @@ class Collection:
     def start(self):
         accel = self.brick.getIOByName("acceleration") # type: LargeMotor
         cradle = self.brick.getIOByName("cradle") # type: LargeMotor
-        
+        init_time = time.time()
+        accel.on_for_rotations(SpeedRPM(60), 1)
