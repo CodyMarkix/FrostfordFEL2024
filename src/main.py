@@ -37,7 +37,7 @@ class Main():
         Tools.waitUntilPressed(brick)
 
         app.start()
-        
+
 
 if __name__ == "__main__":
     Main().main()

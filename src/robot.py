@@ -31,7 +31,12 @@ class Robot:
         self.io_list.sort(key=lambda x: x["name"])
 
     def getIOByName(self, target):
-        # https://en.wikipedia.org/wiki/Binary_search#Algorithm
+        """
+        https://en.wikipedia.org/wiki/Binary_search#Algorithm
+        
+        I know this looks complicated but it's faster than linear search and we
+        can't afford to lose seconds here.
+        """
         low = 0
         high = len(self.io_list) - 1
         
