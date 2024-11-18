@@ -2,7 +2,7 @@
 from ev3dev2.motor import OUTPUT_A, OUTPUT_B, OUTPUT_C
 from ev3dev2.sensor import INPUT_1, INPUT_4, INPUT_2
 
-from ev3dev2.motor import LargeMotor, MediumMotor
+from ev3dev2.motor import LargeMotor, MediumMotor, SpeedRPM
 from ev3dev2.sensor.lego import ColorSensor, GyroSensor, UltrasonicSensor
 
 
@@ -22,7 +22,6 @@ class Main():
     def main(args):
         brick = Robot((
             (GyroSensor, INPUT_1, "gyroscope"),
-            (ColorSensor, INPUT_4, "colorCam"),
             (UltrasonicSensor, INPUT_2, "ultrasonic"),
             (MediumMotor, OUTPUT_A, "steering"),
             (LargeMotor, OUTPUT_B, "cradle"),
@@ -30,7 +29,7 @@ class Main():
         )
         app = Collection(brick)
 
-        routine = StartRoutine(brick.getIOByName("gyroscope"), brick.getIOByName("colorCam"), brick.spkr, brick.leds)
+        routine = StartRoutine(brick.getIOByName("gyroscope"), brick.spkr, brick.leds)
         routine.perform()
 
         # Wait until we confirm continuation

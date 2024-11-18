@@ -51,7 +51,7 @@ class Map:
         Moves on map by a certain amount of coordinates. Cannot move diagonally unless `force` is set to True
         """
         if coords[0] * coords[1] == 0 or force:
-            if coords[0] > -1 and coords[1] > -1 and coords[0] < len(self.layout[0]) and coords[1] < len(self.layout[1]):
+            if abs(coords[0]) < len(self.layout[0]) and abs(coords[1]) < len(self.layout[1]):
                 self.current_position[0] += coords[0]
                 self.current_position[1] += coords[1]
             else:

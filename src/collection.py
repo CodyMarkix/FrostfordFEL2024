@@ -1,5 +1,7 @@
-from ev3dev2.motor import SpeedRPS, MediumMotor, LargeMotor
+from ev3dev2.motor import SpeedRPM, MediumMotor, LargeMotor
 from ev3dev2.sensor.lego import UltrasonicSensor
+from field.ball import Ball
+from field.basketball import Basketball
 
 from field import map
 from robot import Robot
@@ -8,8 +10,11 @@ from tools import Tools
 import time
 
 class Collection:
-    backpack = []
-    map = map.Map((0,1))
+    backpack = [
+        {"color": "blue", "count": 0},
+        {"color": "red", "count": 0}    
+    ]
+    map = map.Map((4,3))
 
     def __init__(self, brick: Robot):
         self.brick = brick
@@ -22,12 +27,21 @@ class Collection:
 
         init_time = time.time()
         
-        # accel.on_for_rotations(SpeedRPM(60), 6.72, block=True)
-        # print(cradle)
-        # cradle.on_for_degrees(SpeedRPM(60), 40)
 
-        # self.brick.turnAround(accel, steer, self.brick.getIOByName("gyroscope"))
+        steer.on_for_degrees(SpeedRPM(200), -45, block=True)
+        accel.on_for_rotations(SpeedRPM(120), self.brick.cmToRotations(28), block=True)
+        self.map.moveByPosition((-1, 0))
+        self.map.moveByPosition((0, -1))
+        self.backpack[1].update({"color": "red", "count": self.backpack[1]["count"] + 1})
 
-        accel.on_for_seconds(SpeedRPS(2.3), 4, block=False)
-        while True:
-            print(accel.is_overloaded, accel.is_stalled)
+
+        steer.on_for_degrees(SpeedRPM(200), 45, block=True)
+        accel.on_for_rotations(SpeedRPM(120), self.brick.cmToRotations(26), block=True)
+        self.map.moveByPosition((0, -1))
+        self.backpack[0].update({"color": "blue", "count": self.backpack[0]["count"] + 1})
+
+
+        steer.on_for_degrees(SpeedRPM(200), 45)
+        accel.on_for_rotations(SpeedRPM(120), self.brick.cmToRotations(32), block=True)
+        self.backpack[1].update({"color": "blue", "count": self.backpack[1]["count"] + 1})
+

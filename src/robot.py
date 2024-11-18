@@ -1,7 +1,7 @@
 from ev3dev2.motor import OUTPUT_A, OUTPUT_B, OUTPUT_C
 from ev3dev2.sensor import INPUT_1, INPUT_4
 
-from ev3dev2.motor import LargeMotor, MediumMotor, SpeedRPM
+from ev3dev2.motor import LargeMotor, MediumMotor, SpeedRPM, SpeedRPS
 from ev3dev2.sensor.lego import ColorSensor, GyroSensor
 from ev3dev2.button import Button
 from ev3dev2.sound import Sound
@@ -12,8 +12,10 @@ from tools import Tools
 import time, math
 
 class Robot:
-    io_list = []
+    io_list = [] # type: list[dict[str, LargeMotor | MediumMotor | ColorSensor | GyroSensor | str]]
+    wheel_circumference = round(4 * math.pi, 2)
     
+
     def __init__(self, iomap):
         self.__initIO__(iomap)
         self.buttons = Button()
@@ -28,30 +30,37 @@ class Robot:
 
         self.io_list.sort(key=lambda x: x["name"])
 
-    def getIOByName(self, target):
+    def getIOByName(self, target, bs=False):
         """
         Searches for a registered sensor/motor by its name.
 
         https://en.wikipedia.org/wiki/Binary_search#Algorithm
         
-        I know this looks complicated but it's faster than linear search and we
-        can't afford to lose seconds here.
+        I know this looks complicated but it can be faster than linear search if `bs` is set to true
+        and we can't afford to lose seconds here.
         """
-        low = 0
-        high = len(self.io_list) - 1
-        
-        while low <= high:
-            mid = (low + high) // 2
-            mid_value = self.io_list[mid]["name"]
+        if bs:
+            low = 0
+            high = len(self.io_list) - 1
             
-            if mid_value == target:
-                return self.io_list[mid]["object"]
-            elif mid_value < target:
-                low = mid + 1
-            else:
-                high = mid - 1
-            
-        return None
+            while low <= high:
+                mid = (low + high) // 2
+                mid_value = self.io_list[mid]["name"]
+                
+                if mid_value == target:
+                    return self.io_list[mid]["object"]
+                elif mid_value < target:
+                    low = mid + 1
+                else:
+                    high = mid - 1
+                
+            return None
+        else:
+            for x in self.io_list:
+                if x['name'] == target:
+                    return x['object']
+                else:
+                    continue
     
     def turnAround(self, accel: LargeMotor, steer: MediumMotor, gyro: GyroSensor):
         steer.reset()
@@ -81,14 +90,19 @@ class Robot:
 
         steer.reset()
 
-    def cmToRotations(cm: float, s: float) -> float:
+    def cmToRotations(self, cm: float) -> float:
         """
         Convert path in cm to rotations
         """
-        wheel_perimeter = round(4 * math.pi, 2)
 
-        return cm / wheel_perimeter
+        return cm / self.wheel_circumference
     
+    def convertRPMtoSeconds(self, rpm: float, track: float) -> float:
+        """
+        Converts ev3dev2 `SpeedRPS()` to seconds of travel.
+        """
+        return track / (self.wheel_circumference * (rpm / 60))
+
     def waitUntilPressed(self):
         while True:
             if self.buttons.enter:
