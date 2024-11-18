@@ -1,16 +1,16 @@
 #!/usr/bin/env python3
 from ev3dev2.motor import OUTPUT_A, OUTPUT_B, OUTPUT_C
-from ev3dev2.sensor import INPUT_1, INPUT_4
+from ev3dev2.sensor import INPUT_1, INPUT_4, INPUT_2
 
 from ev3dev2.motor import LargeMotor, MediumMotor
-from ev3dev2.sensor.lego import ColorSensor, GyroSensor
+from ev3dev2.sensor.lego import ColorSensor, GyroSensor, UltrasonicSensor
 
 
 from robot import Robot
 from startroutine import StartRoutine
 from collection import Collection
 from tools import Tools
-import time
+import time, sys
 
 class Main():
     """
@@ -19,10 +19,11 @@ class Main():
     """
 
     @staticmethod
-    def main():
+    def main(args):
         brick = Robot((
             (GyroSensor, INPUT_1, "gyroscope"),
             (ColorSensor, INPUT_4, "colorCam"),
+            (UltrasonicSensor, INPUT_2, "ultrasonic"),
             (MediumMotor, OUTPUT_A, "steering"),
             (LargeMotor, OUTPUT_B, "cradle"),
             (LargeMotor, OUTPUT_C, "acceleration"))
@@ -33,11 +34,9 @@ class Main():
         routine.perform()
 
         # Wait until we confirm continuation
-        Tools.waitUntilPressed(brick)
+        brick.waitUntilPressed()
 
         app.start()
 
-
 if __name__ == "__main__":
-    print(time.time())
-    Main().main()
+    Main().main(sys.argv)

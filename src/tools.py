@@ -1,8 +1,6 @@
-from robot import Robot
+from ev3dev2.motor import SpeedRPS
+import math
 
 class Tools:
-    @staticmethod
-    def waitUntilPressed(brick: Robot):
-        while True:
-            if brick.buttons.enter:
-                break
+    def __init__(self) -> None:
+        pass
