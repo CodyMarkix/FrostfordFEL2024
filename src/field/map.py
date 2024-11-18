@@ -39,7 +39,7 @@ class Map:
             [(Depository(1), 0), (RaisedPlatform(), 0), (RaisedPlatform(), 0), (Intersection(14), 0), (Ball("green"), 140)]
     ]
 
-    current_position = Coordinates([0, 1]) # If the position fails to set from the constructor, we use this as a fallback
+    current_position = Coordinates([0,2]) # If the position fails to set from the constructor, we use this as a fallback
     def __init__(self, initialPositions):
         self.current_position = Coordinates(list(initialPositions))
 
