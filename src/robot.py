@@ -13,7 +13,7 @@ import time, math
 
 class Robot:
     io_list = [] # type: list[dict[str, LargeMotor | MediumMotor | ColorSensor | GyroSensor | str]]
-    wheel_circumference = round(4 * math.pi, 2)
+    wheel_circumference = round(6.8 * math.pi, 2)
     
 
     def __init__(self, iomap):

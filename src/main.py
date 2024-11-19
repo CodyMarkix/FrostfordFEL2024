@@ -22,7 +22,6 @@ class Main():
     def main(args):
         brick = Robot((
             (GyroSensor, INPUT_1, "gyroscope"),
-            (UltrasonicSensor, INPUT_2, "ultrasonic"),
             (MediumMotor, OUTPUT_A, "steering"),
             (LargeMotor, OUTPUT_B, "cradle"),
             (LargeMotor, OUTPUT_C, "acceleration"))
