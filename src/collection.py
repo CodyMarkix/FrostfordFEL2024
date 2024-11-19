@@ -46,8 +46,11 @@ class Collection:
         # self.backpack[1].update({"color": "blue", "count": self.backpack[1]["count"] + 1})
 
         iter = 0
-        while iter < 4:
+        while iter == 4:
             if iter != 0:
+                cradle.on_for_degrees(60, -80, block=True)
+                time.sleep(0.25)
+
                 accel.on_for_rotations(SpeedRPM(120), (self.brick.cmToRotations(28) * -1), block=True)
                 self.brick.waitUntilPressed()
                 
@@ -61,7 +64,7 @@ class Collection:
 
                 steer.on_for_degrees(SpeedRPM(200), -90, block=True)
 
-                accel.on_for_rotations(SpeedRPM(160), (self.brick.cmToRotations(83 - 28 * iter) * - 1), block=True)
+                accel.on_for_rotations(SpeedRPM(160), (self.brick.cmToRotations(112 - 28 * iter) * - 1), block=True)
 
             steer.on_for_degrees(SpeedRPM(200), 90, block=True)
             time.sleep(0.25)
@@ -71,14 +74,14 @@ class Collection:
             self.map.moveByPosition((0, -1))
 
             steer.on_for_degrees(SpeedRPM(200), -90, block=True)
-            self.backpack[1].update({"color": "blue", "count": self.backpack[0]["count"] + 1})
+            self.backpack[0 if iter % 2 == 0 else 1].update({"color": "blue", "count": self.backpack[0 if iter % 2 == 0 else 1]["count"] + 1})
             
             self.brick.waitUntilPressed() # Should now be at y: 1; x: 2
 
 
             accel.on_for_rotations(SpeedRPM(120), self.brick.cmToRotations(56), block=True)
-            self.backpack[1].update({"color": "blue", "count": self.backpack[0]["count"] + 1})
-            self.backpack[0].update({"color": "red", "count": self.backpack[1]["count"] + 1})
+            self.backpack[1 if iter % 2 == 0 else 0].update({"color": "blue", "count": self.backpack[1 if iter % 2 == 0 else 0]["count"] + 1})
+            self.backpack[0 if iter % 2 == 0 else 1].update({"color": "red", "count": self.backpack[0 if iter % 2 == 0 else 1]["count"] + 1})
             self.map.moveByPosition((0, -2))
 
             self.brick.waitUntilPressed() # Should now be at y: 1; x: 0
@@ -116,3 +119,8 @@ class Collection:
             self.map.moveByPosition((0, 1)) # Should now be at y: 5; x: 1
 
             cradle.on_for_degrees(60, 20)
+
+        accel.on_for_rotations(SpeedRPM(120), (self.brick.cmToRotations(56) * -1), block=True)
+
+        
+    
