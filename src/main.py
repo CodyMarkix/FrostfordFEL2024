@@ -10,7 +10,7 @@ from robot import Robot
 from startroutine import StartRoutine
 from collection import Collection
 from tools import Tools
-import time, sys
+import time, sys, logging
 
 class Main():
     """
@@ -20,6 +20,8 @@ class Main():
 
     @staticmethod
     def main(args):
+        logging.basicConfig(filename='latest.log', level=logging.DEBUG)
+
         brick = Robot((
             (GyroSensor, INPUT_1, "gyroscope"),
             (MediumMotor, OUTPUT_A, "steering"),
@@ -28,10 +30,16 @@ class Main():
         )
         app = Collection(brick)
 
-        routine = StartRoutine(brick.getIOByName("gyroscope"), brick.spkr, brick.leds)
-        routine.perform()
+        # routine = StartRoutine(brick.getIOByName("gyroscope"), brick.spkr, brick.leds)
+        # routine.perform()
 
         # Wait until we confirm continuation
+        brick.leds.set_color('LEFT', 'AMBER'); brick.leds.set_color('RIGHT', 'AMBER') # Technically the semicolon is strongly discouraged by PEP 8 but fuck that 😎
+        # pbrick.spkr.play_song((('D4', 's'), ('A4', 's'), ('D5', 'e')))
+        steer = brick.getIOByName("steering")
+        steer.stop_action = 'hold'
+        steer.stop()
+
         brick.waitUntilPressed()
 
         app.start()

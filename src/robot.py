@@ -90,18 +90,7 @@ class Robot:
 
         steer.reset()
 
-    def cmToRotations(self, cm: float) -> float:
-        """
-        Convert path in cm to rotations
-        """
-
-        return cm / self.wheel_circumference
-    
-    def convertRPMtoSeconds(self, rpm: float, track: float) -> float:
-        """
-        Converts ev3dev2 `SpeedRPS()` to seconds of travel.
-        """
-        return track / (self.wheel_circumference * (rpm / 60))
+x
 
     def waitUntilPressed(self):
         while True:
